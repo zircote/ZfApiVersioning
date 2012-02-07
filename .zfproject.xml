@@ -15,7 +15,9 @@
       </controllersDirectory>
       <formsDirectory enabled="false"/>
       <layoutsDirectory enabled="false"/>
-      <modelsDirectory/>
+      <modelsDirectory>
+        <modelFile modelName="User"/>
+      </modelsDirectory>
       <modulesDirectory>
         <moduleDirectory moduleName="v1">
           <apisDirectory enabled="false"/>
