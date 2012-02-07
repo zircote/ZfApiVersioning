@@ -1,5 +1,13 @@
 <?php
-require_once 'Zircote/Test/RestControllerTestCase.php';
+/**
+ *
+ *
+ * @author Robert Allen <rallen@ifbyphone.com>
+ * @package
+ * @subpackage
+ *
+ *
+ */
 class V2_UsersControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
 {
 
