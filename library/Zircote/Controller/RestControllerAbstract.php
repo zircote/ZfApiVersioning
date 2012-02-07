@@ -46,11 +46,6 @@ abstract class Zircote_Controller_RestControllerAbstract extends Zend_Rest_Contr
         }
         return $bootstrap->getResource('Log');
     }
-    abstract public function indexAction ();
-    abstract public function getAction ();
-    abstract public function postAction ();
-    abstract public function putAction ();
-    abstract public function deleteAction ();
 }
 
 
