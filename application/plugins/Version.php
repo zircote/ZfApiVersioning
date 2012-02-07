@@ -13,7 +13,6 @@ class Application_Plugin_Version extends Zend_Controller_Plugin_Abstract
                 ->setControllerName($request->getControllerName())
                 ->setActionName($request->getActionName())
                 ->setDispatched(false);
-//             print_r($request); exit;
         }
     }
 }
