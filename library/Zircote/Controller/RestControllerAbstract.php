@@ -38,9 +38,7 @@ abstract class Zircote_Controller_RestControllerAbstract extends Zend_Rest_Contr
         $cs->initContext($cs->getCurrentContext() ?: 'json');
         $cs->setAutoJsonSerialization(false);
         $this->view->error = null;
-        if($cs->getCurrentContext() == 'json'){
-            $this->_helper->viewRenderer->setNoRender(false);
-        }
+        $this->_helper->viewRenderer->setNoRender(false);
     }
     /**
      *
