@@ -1,5 +1,5 @@
 <?php
-
+require_once 'Zircote/Test/RestControllerTestCase.php';
 class V2_UsersControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
 {
 
@@ -8,22 +8,22 @@ class V2_UsersControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
         $this->bootstrap = new Zend_Application(APPLICATION_ENV, APPLICATION_PATH . '/configs/application.ini');
         parent::setUp();
     }
-
-    public function testIndexAction()
+    /**
+     * @group V2
+     */
+    public function testGetAction()
     {
-        $params = array('action' => 'index', 'controller' => 'Users', 'module' => 'v2');
+        $params = array('controller' => 'Users', 'module' => 'v2');
         $urlParams = $this->urlizeOptions($params);
         $url = $this->url($urlParams);
-        $this->dispatch($url);
-        
+        $this->getRequest()->setMethod('get');
+        $this->dispatch($url .'/4');
         // assertions
         $this->assertModule($urlParams['module']);
         $this->assertController($urlParams['controller']);
-        $this->assertAction($urlParams['action']);
-        $this->assertQueryContentContains(
-            'div#view-content p',
-            'View script for controller <b>' . $params['controller'] . '</b> and script/action name <b>' . $params['action'] . '</b>'
-            );
+        $this->assertAction('get');
+        $actual = $this->getResponse()->getBody();
+        $this->assertEquals('{"id":"4","email":"zircote@gmail.com","firstname":"Robert","lastname":"Allen"}', $actual);
     }
 
 
