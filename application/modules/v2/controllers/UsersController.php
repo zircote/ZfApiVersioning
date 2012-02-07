@@ -1,19 +1,26 @@
 <?php
-
-class V2_UsersController extends Zend_Controller_Action
+class V2_UsersController extends Zircote_Controller_RestControllerAbstract
 {
-
-    public function init()
-    {
-        /* Initialize action controller here */
-    }
-
-    public function indexAction()
+    public function indexAction ()
     {
         // action body
     }
-
-
+    public function getAction ()
+    {
+        // action body
+    }
+    public function postAction ()
+    {
+        // action body
+    }
+    public function putAction ()
+    {
+        // action body
+    }
+    public function deleteAction ()
+    {
+        // action body
+    }
 }
 
 
