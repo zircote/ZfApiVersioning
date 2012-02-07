@@ -1,4 +1,13 @@
 <?php
+/**
+ *
+ *
+ * @author Robert Allen <zircote@zircote.com>
+ * @package ZfApiVersion
+ * @subpackage
+ *
+ *
+ */
 class V2_UsersController extends Zircote_Controller_RestControllerAbstract
 {
     public function indexAction ()

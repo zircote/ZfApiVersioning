@@ -2,9 +2,9 @@
 /**
  *
  *
- * @author Robert Allen <rallen@ifbyphone.com>
- * @package
- * @subpackage
+ * @author Robert Allen <zircote@zircote.com>
+ * @package ZfApiVersion
+ * @subpackage Zircote_Controller
  *
  * - Method  URI              Module_Controller::action
  * - GET     /api/users/      Api_UsersController::indexAction()
@@ -15,6 +15,10 @@
  */
 abstract class Zircote_Controller_RestControllerAbstract extends Zend_Rest_Controller
 {
+    /**
+     *  Actions and contexts fpr contextSwitch helper
+     * @var array
+     */
     public $contexts = array(
         'index'  => array('json','xml'),
         'get'    => array('json','xml'),
@@ -22,10 +26,18 @@ abstract class Zircote_Controller_RestControllerAbstract extends Zend_Rest_Contr
         'put'    => array('json','xml'),
         'delete' => array('json','xml')
     );
+    /**
+     * (non-PHPdoc)
+     * @see Zend_Controller_Action::preDispatch()
+     */
     public function preDispatch ()
     {
-        $this->_helper->viewRenderer->setNoRender(true);
+//         $this->_helper->viewRenderer->setNoRender(true);
     }
+    /**
+     * (non-PHPdoc)
+     * @see Zend_Controller_Action::init()
+     */
     public function init ()
     {
         $this->_helper->contextSwitch()->initContext();

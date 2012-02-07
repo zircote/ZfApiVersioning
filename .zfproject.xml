@@ -52,7 +52,9 @@
         <moduleDirectory moduleName="api">
           <apisDirectory enabled="false"/>
           <configsDirectory enabled="false"/>
-          <controllersDirectory/>
+          <controllersDirectory>
+            <controllerFile controllerName="Index"/>
+          </controllersDirectory>
           <formsDirectory enabled="false"/>
           <layoutsDirectory enabled="false"/>
           <modelsDirectory/>
@@ -120,6 +122,13 @@
           <testApplicationModuleDirectory forModuleName="v2">
             <testApplicationControllerDirectory>
               <testApplicationControllerFile forControllerName="Users">
+                <testApplicationActionMethod forActionName="index"/>
+              </testApplicationControllerFile>
+            </testApplicationControllerDirectory>
+          </testApplicationModuleDirectory>
+          <testApplicationModuleDirectory forModuleName="api">
+            <testApplicationControllerDirectory>
+              <testApplicationControllerFile forControllerName="Index">
                 <testApplicationActionMethod forActionName="index"/>
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
