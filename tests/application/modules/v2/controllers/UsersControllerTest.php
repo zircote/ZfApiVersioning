@@ -31,6 +31,11 @@ class V2_UsersControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
         $this->assertController($urlParams['controller']);
         $this->assertAction('get');
         $actual = $this->getResponse()->getBody();
+        /* Is it a JSON Header? */
+        $this->assertHeaderContains('Content-Type', 'application/json');
+        /* is it a 200 status code? */
+        $this->assertEquals('200', $this->getResponse()->getHttpResponseCode());
+        /* Is the body what we expect? */
         $this->assertEquals('{"id":"4","email":"zircote@gmail.com","firstname":"Robert","lastname":"Allen"}', $actual);
     }
 
