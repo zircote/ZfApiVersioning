@@ -7,13 +7,11 @@
  * @subpackage
  *
  * Method	URI	Module_Controller::action
- * - GET	/api/users/                   Api_UsersController::indexAction()
- * - GET	/api/users/:id                Api_UsersController::getAction()
- * - POST	/api/users                    Api_UsersController::postAction()
- * - PUT	/api/users/:id	            Api_UsersController::putAction()
- * - DELETE	/api/users/:id	            Api_UsersController::deleteAction()
- * - POST	/api/users/:id?_method=PUT    Api_UsersController::putAction()
- * - POST	/api/users/:id?_method=DELETE Api_UsersController::deleteAction()
+ * - GET    /api/users/      Api_UsersController::indexAction()
+ * - GET    /api/users/:id   Api_UsersController::getAction()
+ * - POST   /api/users       Api_UsersController::postAction()
+ * - PUT    /api/users/:id   Api_UsersController::putAction()
+ * - DELETE /api/users/:id   Api_UsersController::deleteAction()
  */
 abstract class Zircote_Controller_RestControllerAbstract extends Zend_Rest_Controller
 {
