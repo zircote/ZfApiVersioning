@@ -28,20 +28,16 @@ abstract class Zircote_Controller_RestControllerAbstract extends Zend_Rest_Contr
     );
     /**
      * (non-PHPdoc)
-     * @see Zend_Controller_Action::preDispatch()
-     */
-    public function preDispatch ()
-    {
-//         $this->_helper->viewRenderer->setNoRender(true);
-    }
-    /**
-     * (non-PHPdoc)
      * @see Zend_Controller_Action::init()
      */
     public function init ()
     {
-        $this->_helper->contextSwitch()->initContext();
-        $this->_helper->contextSwitch()->setAutoJsonSerialization(false);
+        $this->_helper->viewRenderer->setNoRender(true);
+        /* @var $cs Zend_Controller_Action_Helper_ContextSwitch */
+        $cs = $this->_helper->contextSwitch();
+        $cs->initContext($cs->getCurrentContext() ?: 'json');
+        $cs->setAutoJsonSerialization(true);
+        $this->view->error = null;
     }
     /**
      *
@@ -49,6 +45,7 @@ abstract class Zircote_Controller_RestControllerAbstract extends Zend_Rest_Contr
      */
     public function getLog()
     {
+        /* @var $bootstrap Zend_Application_Bootstrap_Bootstrap */
         $bootstrap = $this->getInvokeArg('bootstrap');
         if (!$bootstrap->hasResource('Log')) {
             $writer = new Zend_Log_Writer_Null();
@@ -59,6 +56,5 @@ abstract class Zircote_Controller_RestControllerAbstract extends Zend_Rest_Contr
         return $bootstrap->getResource('Log');
     }
 }
-
 
 
