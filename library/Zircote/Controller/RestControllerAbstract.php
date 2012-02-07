@@ -3,8 +3,8 @@
  *
  *
  * @author Robert Allen <zircote@zircote.com>
- * @package ZfApiVersion
- * @subpackage Zircote_Controller
+ * @package Zircote
+ * @subpackage Controller
  *
  * - Method  URI              Module_Controller::action
  * - GET     /api/users/      Api_UsersController::indexAction()
@@ -53,6 +53,21 @@ abstract class Zircote_Controller_RestControllerAbstract extends Zend_Rest_Contr
             return $log;
         }
         return $bootstrap->getResource('Log');
+    }
+    /**
+     * @return Zend_Cache_Core
+     */
+    public function getCache()
+    {
+        /* @var $bootstrap Zend_Application_Bootstrap_Bootstrap */
+        $bootstrap = $this->getInvokeArg('bootstrap');
+        if (!$bootstrap->hasResource('Cache')) {
+            $cache = new Zend_Cache_Core();
+            $cache->setOption('automatic_serialization', true);
+            $cache->setBackend(new Zend_Cache_Backend_BlackHole());
+            return $cache;
+        }
+        return $bootstrap->getResource('Cache');
     }
 }
 

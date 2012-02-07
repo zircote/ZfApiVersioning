@@ -77,15 +77,16 @@ class Application_Model_Mapper_Users
     }
     /**
      *
-     * @return array[Application_Model_User]
+     * @return Application_Model_UserCollection
+     *
      */
     public function getUsers()
     {
         $sql = $this->_db->select()->from(self::TABLE_NAME);
         $users = $this->_db->fetchAll($sql);
-        $result = array();
+        $result = new Application_Model_UserCollection;
         foreach ($users as $user) {
-            $result[] = new Application_Model_User($user);
+            $result->append(new Application_Model_User($user));
         }
         return $result;
     }

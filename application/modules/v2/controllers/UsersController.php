@@ -13,18 +13,20 @@ class V2_UsersController extends Zircote_Controller_RestControllerAbstract
     public $result;
     /**
      *
-     * @var Application_Model_Mapper_Users
+     * @var V2_Service_User
      */
-    protected $_mapper;
+    protected $_service;
     public function init()
     {
-        $this->_mapper = new Application_Model_Mapper_Users();
+        $this->_service = new V2_Service_User();
+        $this->_service->setLog($this->getLog())
+            ->setCache($this->getCache());
         $this->_helper->viewRenderer->setNoRender(true);
         parent::init();
     }
     public function indexAction ()
     {
-        $this->result = $this->_mapper->getUsers();
+        $this->result = $this->_service->fetchAllUsers();
     }
     /**
      * - http://api.local/v2/users/4?format=json
@@ -66,10 +68,8 @@ class V2_UsersController extends Zircote_Controller_RestControllerAbstract
      */
     public function getAction ()
     {
-        $user = new Application_Model_User(
-            array('id' => $this->getRequest()->getParam('id'))
-        );
-        $user = $this->_mapper->getUserById($user);
+        $user = $this->_service
+            ->fetchUserById($this->getRequest()->getUserParam('id'));
         $this->result = $user;
     }
     /**
@@ -80,7 +80,7 @@ class V2_UsersController extends Zircote_Controller_RestControllerAbstract
     {
         if ($this->_request->isPost()) {
             $user = new Application_Model_User($this->getRequest()->getParams());
-            $user = $this->_mapper->updateUser($user);
+            $this->result = $this->_service->saveUser($user);
             $this->getResponse()->setRedirect(
                 $this->view->url($this->getRequest()->getUserParams()),201
             );
@@ -97,7 +97,7 @@ class V2_UsersController extends Zircote_Controller_RestControllerAbstract
     {
         if ($this->_request->isPut()) {
             $user = new Application_Model_User($this->getRequest()->getParams());
-            $user = $this->_mapper->addUser($user);
+            $user = $this->_service->createUser($user);
             $url = $this->view->url($this->getRequest()->getUserParams());
             $this->getResponse()->setRedirect(
                 $this->view->url($this->getRequest()->getUserParams()),201
@@ -115,7 +115,7 @@ class V2_UsersController extends Zircote_Controller_RestControllerAbstract
     {
         if($this->_request->isDelete()){
             $user = new Application_Model_User(array('id' => $this->_getParam('id')));
-            if($this->result = $this->_mapper->deleteUser($user)){
+            if($this->result = $this->_service->deleteUser($user)){
                 $this->getResponse()->setHttpResponseCode(202);
             }
         }
