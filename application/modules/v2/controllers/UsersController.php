@@ -25,8 +25,39 @@ class V2_UsersController extends Zircote_Controller_RestControllerAbstract
         $this->view->result = $this->_mapper->getUsers();
     }
     /**
+     * http://api.local/v2/users/4?format=json
+     * http://api.local/v2/users/4
      * <code>
-     * {"error":null,"result":{"id":"3","email":"zircote@gmail.com","firstname":"Robert","lastname":"Allen"}}
+     * HTTP/1.1 200 OK
+     * Date: Tue, 07 Feb 2012 15:05:56 GMT
+     * Server: Apache/2.2.21 (Unix) PHP/5.3.9-ZS5.6.0 mod_ssl/2.2.21 OpenSSL/0.9.8o
+     * X-Powered-By: PHP/5.3.9-ZS5.6.0 ZendServer/5.0
+     * Content-Length: 78
+     * Keep-Alive: timeout=5, max=100
+     * Connection: Keep-Alive
+     * Content-Type: application/json
+     *
+     * {"id":"4","email":"zircote@gmail.com","firstname":"Robert","lastname":"Allen"}
+     * </code>
+     *
+     * http://api.local/v2/users/4?format=xml
+     * <code>
+     * HTTP/1.1 200 OK
+     * Date: Tue, 07 Feb 2012 15:06:46 GMT
+     * Server: Apache/2.2.21 (Unix) PHP/5.3.9-ZS5.6.0 mod_ssl/2.2.21 OpenSSL/0.9.8o
+     * X-Powered-By: PHP/5.3.9-ZS5.6.0 ZendServer/5.0
+     * Content-Length: 133
+     * Keep-Alive: timeout=5, max=100
+     * Connection: Keep-Alive
+     * Content-Type: application/xml
+     *
+     * <?xml version="1.0"?>
+     * <user>
+     *     <id>4</id>
+     *     <email>zircote@gmail.com</email>
+     *     <firstname>Robert</firstname>
+     *     <lastname>Allen</lastname>
+     * </user>
      * </code>
      * (non-PHPdoc)
      * @see Zend_Rest_Controller::getAction()
@@ -35,7 +66,7 @@ class V2_UsersController extends Zircote_Controller_RestControllerAbstract
     {
         $user = new Application_Model_User(array('id' => $this->getRequest()->getParam('id')));
         $user = $this->_mapper->getUserById($user);
-        $this->view->result = $user->toArray();
+        $this->view->user = $user;
     }
     /**
      * (non-PHPdoc)

@@ -32,12 +32,15 @@ abstract class Zircote_Controller_RestControllerAbstract extends Zend_Rest_Contr
      */
     public function init ()
     {
-        $this->_helper->viewRenderer->setNoRender(true);
         /* @var $cs Zend_Controller_Action_Helper_ContextSwitch */
         $cs = $this->_helper->contextSwitch();
+        $cs->initContext();
         $cs->initContext($cs->getCurrentContext() ?: 'json');
-        $cs->setAutoJsonSerialization(true);
+        $cs->setAutoJsonSerialization(false);
         $this->view->error = null;
+        if($cs->getCurrentContext() == 'json'){
+            $this->_helper->viewRenderer->setNoRender(false);
+        }
     }
     /**
      *

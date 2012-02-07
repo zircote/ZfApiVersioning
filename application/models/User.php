@@ -72,6 +72,14 @@ class Application_Model_User
             'lastname' => $this->_lastname
         );
     }
+    public function toXml()
+    {
+        $xml = new SimpleXMLElement('<user></user>');
+        foreach ($this->toArray() as $key => $value) {
+            $xml->addChild($key, $value);
+        }
+        return $xml;
+    }
     /**
      *
      * @return int
