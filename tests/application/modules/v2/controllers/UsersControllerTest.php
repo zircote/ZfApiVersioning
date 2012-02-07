@@ -3,8 +3,8 @@
  *
  *
  * @author Robert Allen <rallen@ifbyphone.com>
- * @package
- * @subpackage
+ * @package V2
+ * @subpackage Tests
  *
  *
  */
@@ -36,7 +36,13 @@ class V2_UsersControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
         /* is it a 200 status code? */
         $this->assertEquals('200', $this->getResponse()->getHttpResponseCode());
         /* Is the body what we expect? */
-        $this->assertEquals('{"id":"4","email":"zircote@gmail.com","firstname":"Robert","lastname":"Allen"}', $actual);
+        $expected = array (
+            'lastname' => 'Allen',
+            'id' => 4,
+            'email' => 'zircote@gmail.com',
+            'firstname' => 'Robert'
+        );
+        $this->assertEquals($expected, Zend_Json::decode($actual));
     }
 
 
