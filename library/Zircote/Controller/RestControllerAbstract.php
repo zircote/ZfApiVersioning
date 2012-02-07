@@ -31,6 +31,21 @@ abstract class Zircote_Controller_RestControllerAbstract extends Zend_Rest_Contr
         $this->_helper->contextSwitch()->initContext();
         $this->_helper->contextSwitch()->setAutoJsonSerialization(false);
     }
+    /**
+     *
+     * @return Zend_Log
+     */
+    public function getLog()
+    {
+        $bootstrap = $this->getInvokeArg('bootstrap');
+        if (!$bootstrap->hasResource('Log')) {
+            $writer = new Zend_Log_Writer_Null();
+            $log = new Zend_Log();
+            $log->addWriter($writer);
+            return $log;
+        }
+        return $bootstrap->getResource('Log');
+    }
     abstract public function indexAction ();
     abstract public function getAction ();
     abstract public function postAction ();
