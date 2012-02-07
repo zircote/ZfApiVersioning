@@ -10,6 +10,7 @@
  */
 class V2_UsersController extends Zircote_Controller_RestControllerAbstract
 {
+    public $result;
     /**
      *
      * @var Application_Model_Mapper_Users
@@ -18,11 +19,12 @@ class V2_UsersController extends Zircote_Controller_RestControllerAbstract
     public function init()
     {
         $this->_mapper = new Application_Model_Mapper_Users();
+        $this->_helper->viewRenderer->setNoRender(true);
         parent::init();
     }
     public function indexAction ()
     {
-        $this->view->result = $this->_mapper->getUsers();
+        $this->result = $this->_mapper->getUsers();
     }
     /**
      * - http://api.local/v2/users/4?format=json
@@ -64,9 +66,11 @@ class V2_UsersController extends Zircote_Controller_RestControllerAbstract
      */
     public function getAction ()
     {
-        $user = new Application_Model_User(array('id' => $this->getRequest()->getParam('id')));
+        $user = new Application_Model_User(
+            array('id' => $this->getRequest()->getParam('id'))
+        );
         $user = $this->_mapper->getUserById($user);
-        $this->view->user = $user;
+        $this->result = $user;
     }
     /**
      * (non-PHPdoc)
@@ -81,7 +85,7 @@ class V2_UsersController extends Zircote_Controller_RestControllerAbstract
                 $this->view->url($this->getRequest()->getUserParams()),201
             );
         } else {
-            $this->view->error = "Invalid Request";
+            $this->error = "Invalid Request";
             $this->getResponse()->setHttpResponseCode(400);
         }
     }
@@ -111,10 +115,26 @@ class V2_UsersController extends Zircote_Controller_RestControllerAbstract
     {
         if($this->_request->isDelete()){
             $user = new Application_Model_User(array('id' => $this->_getParam('id')));
-            if($this->view->result = $this->_mapper->deleteUser($user)){
+            if($this->result = $this->_mapper->deleteUser($user)){
                 $this->getResponse()->setHttpResponseCode(202);
             }
         }
+    }
+    /**
+     * (non-PHPdoc)
+     * @see Zend_Controller_Action::postDispatch()
+     */
+    public function postDispatch()
+    {
+        switch ($this->_helper->contextSwitch()->getCurrentContext()){
+            case 'xml':
+                $responseBody = $this->result->toXml()->asXML();
+                break;
+            case 'json':
+            default:
+                $responseBody =  Zend_Json::encode($this->result->toArray());
+        }
+        $this->getResponse()->appendBody($responseBody);
     }
 }
 

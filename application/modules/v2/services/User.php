@@ -8,7 +8,7 @@
  *
  *
  */
-class V2_Service_User
+class V2_Service_User extends Zircote_Service_ServiceAbstract
 {
 
 }
