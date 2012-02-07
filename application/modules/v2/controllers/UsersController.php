@@ -25,8 +25,8 @@ class V2_UsersController extends Zircote_Controller_RestControllerAbstract
         $this->view->result = $this->_mapper->getUsers();
     }
     /**
-     * http://api.local/v2/users/4?format=json
-     * http://api.local/v2/users/4
+     * - http://api.local/v2/users/4?format=json
+     * - http://api.local/v2/users/4
      * <code>
      * HTTP/1.1 200 OK
      * Date: Tue, 07 Feb 2012 15:05:56 GMT
@@ -40,7 +40,7 @@ class V2_UsersController extends Zircote_Controller_RestControllerAbstract
      * {"id":"4","email":"zircote@gmail.com","firstname":"Robert","lastname":"Allen"}
      * </code>
      *
-     * http://api.local/v2/users/4?format=xml
+     * - http://api.local/v2/users/4?format=xml
      * <code>
      * HTTP/1.1 200 OK
      * Date: Tue, 07 Feb 2012 15:06:46 GMT
