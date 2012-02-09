@@ -78,4 +78,17 @@ abstract class Zircote_Service_ServiceAbstract
         $this->_cache = $cache;
         return $this;
     }
+    /**
+     *
+     * @param string $keyName
+     * @returnstring
+     */
+    protected function _cacheKey($keyName){
+        /* @todo this will need refactoring to a new place */
+        $filter = new Zend_Filter_PregReplace(array(
+            'match' => '/(\w+)::(\w+)/',
+            'replace' => '$1_$2'
+        ));
+        return $filter->filter($keyName);
+    }
 }

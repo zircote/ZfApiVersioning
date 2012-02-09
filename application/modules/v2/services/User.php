@@ -30,9 +30,10 @@ class V2_Service_User extends Zircote_Service_ServiceAbstract
      */
     public function fetchAllUsers()
     {
-        if(!$this->getCache()->load(__METHOD__)){
+        $key = $this->_cacheKey(__METHOD__);
+        if(!$this->getCache()->load($key)){
             $data = $this->_mapper->getUsers();
-            $this->getCache()->save($data, __METHOD__);
+            $this->getCache()->save($data, $key);
         }
         return $data;
     }
@@ -43,7 +44,7 @@ class V2_Service_User extends Zircote_Service_ServiceAbstract
      */
     public function fetchUserById($id)
     {
-        $key = str_replace('::', '_', __METHOD__ . "_{$id}");
+        $key = $this->_cacheKey(__METHOD__."{$id}");
         if(!$this->getCache()->load($key)){
             $user = new Application_Model_User(array('id' => $id));
             $data = $this->_mapper->getUserById($user);

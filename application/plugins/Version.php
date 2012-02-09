@@ -13,7 +13,7 @@ class Application_Plugin_Version extends Zend_Controller_Plugin_Abstract
     public function preDispatch($request)
     {
         /* @var $bootstrap Zend_Application_Bootstrap_Bootstrap */
-        if($request->getModuleName() == 'api'){
+        if($request->getModuleName() == 'default' && ! $request->getControllerName() == 'error'  && ($request->getControllerName() != 'index')){
             $bootstrap = Zend_Controller_Front::getInstance()->getParam('bootstrap');
             $defaultVersion = $bootstrap->getOption('defaultVersion');
             $apiVersion = (string) $request->getParam('version', $defaultVersion);
