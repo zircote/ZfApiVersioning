@@ -8,7 +8,7 @@
  *
  *
  */
-class V2_Service_User extends Zircote_Service_ServiceAbstract
+class V2_Service_User extends Zircote_Service_RestServiceAbstract
 {
     /**
      *
@@ -23,6 +23,10 @@ class V2_Service_User extends Zircote_Service_ServiceAbstract
     {
         $this->_mapper = new Application_Model_Mapper_Users();
         parent::__construct($options);
+    }
+    public function getCurrentCount()
+    {
+
     }
     /**
      *

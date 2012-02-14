@@ -61,7 +61,7 @@ abstract class Zircote_Service_ServiceAbstract
     /**
      *
      * @param Zend_Log $log
-     * @return Zircote_Service_ServiceAbstract
+     * @return Zircote_Service_RestServiceAbstract
      */
     public function setLog(Zend_Log $log)
     {
@@ -71,7 +71,7 @@ abstract class Zircote_Service_ServiceAbstract
     /**
      *
      * @param Zend_Cache_Core $cache
-     * @return Zircote_Service_ServiceAbstract
+     * @return Zircote_Service_RestServiceAbstract
      */
     public function setCache(Zend_Cache_Core $cache)
     {

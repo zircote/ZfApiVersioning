@@ -16,6 +16,10 @@ class V2_UsersController extends Zircote_Controller_RestControllerAbstract
      * @var V2_Service_User
      */
     protected $_service;
+    /**
+     * (non-PHPdoc)
+     * @see Zircote_Controller_RestControllerAbstract::init()
+     */
     public function init()
     {
         $this->_service = new V2_Service_User();
@@ -24,6 +28,13 @@ class V2_UsersController extends Zircote_Controller_RestControllerAbstract
         $this->_helper->viewRenderer->setNoRender(true);
         parent::init();
     }
+    /**
+     * (non-PHPdoc)
+     * @see Zend_Rest_Controller::indexAction()
+     *
+     * @authRequired true
+     * @limit accountId
+     */
     public function indexAction ()
     {
         $this->result = $this->_service->fetchAllUsers();
@@ -65,6 +76,10 @@ class V2_UsersController extends Zircote_Controller_RestControllerAbstract
      * </code>
      * (non-PHPdoc)
      * @see Zend_Rest_Controller::getAction()
+     *
+     *
+     * @authRequired true
+     * @limit accountId
      */
     public function getAction ()
     {
@@ -74,16 +89,23 @@ class V2_UsersController extends Zircote_Controller_RestControllerAbstract
     }
     /**
      * (non-PHPdoc)
-     * @see Zend_Rest_Controller::postAction()
+     * @see Zend_Rest_Controller::putAction()
+     *
+     * @authRequired true
+     * @limit accountId
      */
-    public function postAction ()
+    public function putAction ()
     {
         if ($this->_request->isPost()) {
-            $user = new Application_Model_User($this->getRequest()->getParams());
-            $this->result = $this->_service->saveUser($user);
-            $this->getResponse()->setRedirect(
-                $this->view->url($this->getRequest()->getUserParams()),201
-            );
+            if(!$this->getRequest()->getUserParam('id', false)){
+                $this->getResponse()->setHttpResponseCode(405);
+            } else{
+                $user = new Application_Model_User(
+                    $this->getRequest()->getParams()
+                );
+                $this->result = $this->_service->saveUser($user);
+                $this->getResponse()->setHttpResponseCode(201);
+            }
         } else {
             $this->error = "Invalid Request";
             $this->getResponse()->setHttpResponseCode(400);
@@ -91,17 +113,25 @@ class V2_UsersController extends Zircote_Controller_RestControllerAbstract
     }
     /**
      * (non-PHPdoc)
-     * @see Zend_Rest_Controller::putAction()
+     * @see Zend_Rest_Controller::postAction()
+     *
+     * @authRequired true
+     * @limit accountId
      */
-    public function putAction ()
+    public function postAction ()
     {
         if ($this->_request->isPut()) {
-            $user = new Application_Model_User($this->getRequest()->getParams());
-            $user = $this->_service->createUser($user);
-            $url = $this->view->url($this->getRequest()->getUserParams());
-            $this->getResponse()->setRedirect(
-                $this->view->url($this->getRequest()->getUserParams()),201
-            );
+            if($this->getRequest()->getUserParam('id', false)){
+                $this->getResponse()->setHttpResponseCode(405);
+            } else{
+                $user = new Application_Model_User(
+                    $this->getRequest()->getParams()
+                );
+                $user = $this->_service->createUser($user);
+                $url = $this->view->url($this->getRequest()->getUserParams())
+                    ."/{$user->getId()}";
+                $this->getRedirector()->setCode(201)->gotoUrlAndExit($url);
+            }
         } else {
             $this->view->error = "Invalid Request";
             $this->getResponse()->setHttpResponseCode(400);
@@ -110,13 +140,21 @@ class V2_UsersController extends Zircote_Controller_RestControllerAbstract
     /**
      * (non-PHPdoc)
      * @see Zend_Rest_Controller::deleteAction()
+     *
+     * @authRequired true
+     * @limit accountId
      */
     public function deleteAction ()
     {
         if($this->_request->isDelete()){
-            $user = new Application_Model_User(array('id' => $this->_getParam('id')));
-            if($this->result = $this->_service->deleteUser($user)){
-                $this->getResponse()->setHttpResponseCode(202);
+            if(!$this->getRequest()->getUserParam('id', false)){
+                $this->getResponse()->setHttpResponseCode(405);
+            } else{
+                $user = new Application_Model_User(array('id' => $this->_getParam('id')));
+                if($this->_service->deleteUser($user)){
+                    $this->result = array('success');
+                    $this->getResponse()->setHttpResponseCode(204);
+                }
             }
         }
     }

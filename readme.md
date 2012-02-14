@@ -1,11 +1,17 @@
 # Docs and Info coming soon...
 
-This is very much a work in progress and proof of concept exploration. It is possible it will die on the vine or be transformed to a production implementation based on my findings.
+This is very much a work in progress and proof of concept exploration. It is 
+possible it will die on the vine or be transformed to a production 
+implementation based on my findings.
 
 ### Todo
  * Add a pagination Action Helper
+    * Response control for pagination: `Range: items=0-24`
+    * Request control for pagination:  `Content-Range: items 0-24/66`
  * Add a header Action Helper
  * Add a sorting Action Helper
+    * `/FooObject/?foo=value1&sortBy=+foo,-bar`
+    * `/FooObject/?foo=value1&sort(+foo,-bar)`
  * Add an oauth/authentication plugins
 
 ### Scheme
@@ -32,5 +38,5 @@ _Other Items under consideration_:
  * _Response Header_: `Last-Modified: Tue, 15 Nov 1994 12:45:26 GMT` => Updated field of record
  * _Response Header_: `Range: 21010-47021/47022`
    * The presence of a Range header in an unconditional GET modifies what is returned if the GET is otherwise successful. In other words, the response carries a status code of 206 (Partial Content) instead of 200 (OK).
-
-
+ * Implement a JSON Referencing action helper.
+    * http://www.sitepen.com/blog/2008/06/17/json-referencing-in-dojo/

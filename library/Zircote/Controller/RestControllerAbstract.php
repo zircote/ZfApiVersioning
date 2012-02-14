@@ -7,14 +7,19 @@
  * @subpackage Controller
  *
  * - Method  URI              Module_Controller::action
- * - GET     /api/users/      Api_UsersController::indexAction()
- * - GET     /api/users/:id   Api_UsersController::getAction()
- * - POST    /api/users       Api_UsersController::postAction()
- * - PUT     /api/users/:id   Api_UsersController::putAction()
- * - DELETE  /api/users/:id   Api_UsersController::deleteAction()
+ * - GET     /v{?}/users/      Api_UsersController::indexAction()
+ * - GET     /v{?}/users/:id   Api_UsersController::getAction()
+ * - POST    /v{?}/users       Api_UsersController::postAction()
+ * - PUT     /v{?}/users/:id   Api_UsersController::putAction()
+ * - DELETE  /v{?}/users/:id   Api_UsersController::deleteAction()
  */
 abstract class Zircote_Controller_RestControllerAbstract extends Zend_Rest_Controller
 {
+    /**
+     *
+     * @var Zend_Log
+     */
+    protected $_log;
     /**
      *  Actions and contexts fpr contextSwitch helper
      * @var array
@@ -40,19 +45,30 @@ abstract class Zircote_Controller_RestControllerAbstract extends Zend_Rest_Contr
     }
     /**
      *
+     * @return Zend_Controller_Action_Helper_Redirector
+     */
+    public function getRedirector()
+    {
+        return $this->_helper->redirector();
+    }
+    /**
+     *
      * @return Zend_Log
      */
     public function getLog()
     {
-        /* @var $bootstrap Zend_Application_Bootstrap_Bootstrap */
-        $bootstrap = $this->getInvokeArg('bootstrap');
-        if (!$bootstrap->hasResource('Log')) {
-            $writer = new Zend_Log_Writer_Null();
-            $log = new Zend_Log();
-            $log->addWriter($writer);
-            return $log;
+        if(!$this->_log){
+            /* @var $bootstrap Zend_Application_Bootstrap_Bootstrap */
+            $bootstrap = $this->getInvokeArg('bootstrap');
+            if (!$bootstrap->hasResource('Log')) {
+                $writer = new Zend_Log_Writer_Null();
+                $this->_log = new Zend_Log();
+                $this->_log->addWriter($writer);
+            } else {
+                $this->_log = $bootstrap->getResource('Log')->getLog();
+            }
         }
-        return $bootstrap->getResource('Log');
+        return $this->_log;
     }
     /**
      * @return Zend_Cache_Core

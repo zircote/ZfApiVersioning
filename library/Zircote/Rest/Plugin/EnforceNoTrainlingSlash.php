@@ -8,7 +8,7 @@
  *
  *
  */
-class Application_Plugin_EnforceNoTrainlingSlash extends Zend_Controller_Plugin_Abstract
+class Zircote_Rest_Plugin_EnforceNoTrainlingSlash extends Zircote_Rest_Plugin_RestAbstract
 {
     /**
      * (non-PHPdoc)
@@ -23,10 +23,7 @@ class Application_Plugin_EnforceNoTrainlingSlash extends Zend_Controller_Plugin_
         if($request->isGet()){
             if(preg_match('/.+\/$/', $request->getPathInfo())){
                 $filter = new Zend_Filter_PregReplace(
-                    array(
-                        'match' => '/\/$/',
-                        'replace' => ''
-                    )
+                    array('match' => '/\/$/','replace' => '')
                 );
                 $redirector = Zend_Controller_Action_HelperBroker::getStaticHelper('redirector');
                 $redirector->setCode(301)

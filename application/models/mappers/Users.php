@@ -90,4 +90,14 @@ class Application_Model_Mapper_Users
         }
         return $result;
     }
+    /**
+     *
+     * @return number
+     */
+    public function count()
+    {
+        $sql = $this->_db->select()
+            ->from(self::TABLE_NAME, new Zend_Db_Expr('count(*)'));
+        return (int) $this->_db->fetchOne($sql);
+    }
 }
