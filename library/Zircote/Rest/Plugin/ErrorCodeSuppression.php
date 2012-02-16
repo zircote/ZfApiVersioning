@@ -18,7 +18,7 @@ class Zircote_Rest_Plugin_ErrorCodeSuppression extends Zircote_Rest_Plugin_RestA
             if(in_array($val, $haystack)){
                 $val = $haystack[$val];
             }
-            if((boolean)is_integer($val)?false:$val == 1){
+            if(true === $val){
                 $this->getResponse()->setHttpResponseCode(200);
             }
         }
