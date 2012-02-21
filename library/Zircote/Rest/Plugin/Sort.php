@@ -1,6 +1,6 @@
 <?php
 /**
- *
+ * ?limit=2&offset=0&fields=id,email&sort=id(desc)
  * @author zircote
  * @version
  */
@@ -10,18 +10,14 @@ class Zircote_Rest_Plugin_Sort extends Zircote_Rest_Plugin_RestAbstract
      *
      * @var string
      */
-    const APP_NAMESPACE = 'ZREST_SORT';
-    const SORT_ASC = 'asc';
-    const SORT_DESC = 'desc';
+    const SORT_ASC = 'ASC';
+    const SORT_DESC = 'DESC';
     /**
      * (non-PHPdoc)
      * @see Zircote_Rest_Plugin_RestAbstract::setOptions()
      */
     public function setOptions($options)
     {
-        if(isset($options['storage_namespace'])){
-            $this->_namespace = $options['storage_namespace'];
-        }
         if(isset($options['defaults'])){
             $options = $options['defaults'];
         }
@@ -35,11 +31,10 @@ class Zircote_Rest_Plugin_Sort extends Zircote_Rest_Plugin_RestAbstract
     public function preDispatch($request)
     {
         if(null !== ($sort = $this->getRequest()->getParam('sort', null))){
-            $data = Zend_Registry::get(self::GLOBAL_NAMESPACE);
-            $data[self::APP_NAMESPACE]= array(
-                'sort' => $this->_getSort($sort)
+            $data = $this->_getSort($sort);
+            Zircote_Rest_DbRegister::getInstance()->set(
+                Zircote_Rest_DbRegister::SORT, $data
             );
-            Zend_Registry::set(self::GLOBAL_NAMESPACE, $data);
         }
     }
     protected function _getSort($data)

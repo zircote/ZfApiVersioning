@@ -20,11 +20,6 @@ class Zircote_Rest_Plugin_Accept extends Zircote_Rest_Plugin_RestAbstract
      *
      * @var string
      */
-    const APP_NAMESPACE = 'ZREST_ACCEPT';
-    /**
-     *
-     * @var string
-     */
     protected $_accept = 'application/json;level=1';
     /**
      * (non-PHPdoc)
@@ -32,9 +27,6 @@ class Zircote_Rest_Plugin_Accept extends Zircote_Rest_Plugin_RestAbstract
      */
     public function setOptions($options)
     {
-        if(isset($options['storage_namespace'])){
-            $this->_namespace = $options['storage_namespace'];
-        }
         if(isset($options['defaults'])){
             $options = $options['defaults'];
         }

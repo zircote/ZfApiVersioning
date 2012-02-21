@@ -12,11 +12,6 @@
  */
 class Zircote_Rest_Plugin_Search extends Zircote_Rest_Plugin_RestAbstract
 {
-    /**
-     *
-     * @var string
-     */
-    const APP_NAMESPACE = 'ZREST_SEARCH';
     protected $_queryKey = 'q';
     /**
      * (non-PHPdoc)
@@ -24,9 +19,6 @@ class Zircote_Rest_Plugin_Search extends Zircote_Rest_Plugin_RestAbstract
      */
     public function setOptions($options)
     {
-        if(isset($options['storage_namespace'])){
-            $this->_namespace = $options['storage_namespace'];
-        }
         if(isset($options['defaults'])){
             $options = $options['defaults'];
         }
@@ -43,11 +35,12 @@ class Zircote_Rest_Plugin_Search extends Zircote_Rest_Plugin_RestAbstract
     public function preDispatch($request)
     {
         if(null !== ($q = $this->getRequest()->getParam($this->_queryKey, null))){
-            $data = Zend_Registry::get(self::GLOBAL_NAMESPACE);
-            $data[self::APP_NAMESPACE]= array(
+            $data = array(
                 'query' => $q
             );
-            Zend_Registry::set(self::GLOBAL_NAMESPACE, $data);
+            Zircote_Rest_DbRegister::getInstance()->set(
+                Zircote_Rest_DbRegister::SEARCH, $data
+            );
         }
     }
 }

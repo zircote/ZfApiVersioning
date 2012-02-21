@@ -20,12 +20,13 @@ class Zircote_Rest_Plugin_RestAbstract extends Zend_Controller_Plugin_Abstract
      */
     public function __construct ()
     {
-        // TODO Auto-generated Constructor
         $this->pluginLoader = new Zend_Loader_PluginLoader();
-        if(!Zend_Registry::isRegistered(self::GLOBAL_NAMESPACE)){
-            Zend_Registry::set(self::GLOBAL_NAMESPACE,array());
-        }
     }
+    /**
+     *
+     * @param array $options
+     * @return Zircote_Rest_Plugin_RestAbstract
+     */
     public function setOptions($options = array())
     {
         $this->_options = $options;

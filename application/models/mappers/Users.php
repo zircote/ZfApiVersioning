@@ -20,6 +20,7 @@ class Application_Model_Mapper_Users
      * @var Zend_Db_Adapter_Abstract
      */
     protected $_db;
+    protected $_select;
     /**
      *
      */
@@ -82,8 +83,7 @@ class Application_Model_Mapper_Users
      */
     public function getUsers()
     {
-        $sql = $this->_db->select()->from(self::TABLE_NAME);
-        $users = $this->_db->fetchAll($sql);
+        $users = $this->_db->fetchAll($this->getSelect());
         $result = new Application_Model_UserCollection;
         foreach ($users as $user) {
             $result->append(new Application_Model_User($user));
@@ -92,12 +92,42 @@ class Application_Model_Mapper_Users
     }
     /**
      *
+     * @param Zend_Db_Table_Select $select
+     * @return Zend_Db_Table_Select
+     */
+    public function setSelect($select)
+    {
+        $this->_select = $select;
+    }
+    /**
+     *
+     * @return Zend_Db_Table_Select
+     */
+    public function getSelect()
+    {
+        if(!$this->_select){
+            $this->_select = $this->_db->select()
+                ->from(self::TABLE_NAME, null);
+        }
+        return $this->_select;
+    }
+    /**
+     *
+     * @return Application_Model_Mapper_Users
+     */
+    public function reset()
+    {
+        $this->_select = null;
+        return $this;
+    }
+    /**
+     *
      * @return number
      */
     public function count()
     {
-        $sql = $this->_db->select()
-            ->from(self::TABLE_NAME, new Zend_Db_Expr('count(*)'));
+        $sql = $this->getSelect()
+            ->columns(new Zend_Db_Expr('count(*)'));
         return (int) $this->_db->fetchOne($sql);
     }
 }

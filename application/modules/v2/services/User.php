@@ -26,7 +26,14 @@ class V2_Service_User extends Zircote_Service_RestServiceAbstract
     }
     public function getCurrentCount()
     {
-
+        $this->_mapper->reset();
+        $select = Zircote_Rest_DbRegister::getInstance()
+            ->setSelect($this->_mapper->getSelect())
+//             ->preparePaging()
+            ->prepareSort()
+            ->getSelect();
+        $this->_mapper->setSelect($select);
+        return $this->_mapper->count();
     }
     /**
      *
@@ -34,11 +41,19 @@ class V2_Service_User extends Zircote_Service_RestServiceAbstract
      */
     public function fetchAllUsers()
     {
+        $select = Zircote_Rest_DbRegister::getInstance()
+            ->setSelect($this->_mapper->getSelect())
+            ->prepareFields()
+            ->preparePaging()
+            ->prepareSort()
+            ->getSelect();
+        $this->_mapper->setSelect($select);
         $key = $this->_cacheKey(__METHOD__);
         if(!$this->getCache()->load($key)){
             $data = $this->_mapper->getUsers();
             $this->getCache()->save($data, $key);
         }
+        Zircote_Rest_DbRegister::getInstance()->setPaging($this->getCurrentCount());
         return $data;
     }
     /**

@@ -65,12 +65,20 @@ class Application_Model_User
      */
     public function toArray()
     {
-        return array(
-            'id' => $this->_id,
-            'email' => $this->_email,
-            'firstname' => $this->_firstname,
-            'lastname' => $this->_lastname
-        );
+        $data = array();
+        if($this->_id){
+            $data['id'] = $this->_id;
+        }
+        if($this->_email){
+            $data['email'] = $this->_email;
+        }
+        if($this->_firstname){
+            $data['firstname'] = $this->_firstname;
+        }
+        if($this->_lastname){
+            $data['lastname'] = $this->_lastname;
+        }
+        return $data;
     }
     public function toXml()
     {

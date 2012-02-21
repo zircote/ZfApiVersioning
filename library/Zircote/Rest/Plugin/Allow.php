@@ -16,17 +16,22 @@
  */
 class Zircote_Rest_Plugin_Allow extends Zircote_Rest_Plugin_RestAbstract
 {
+    /**
+     *
+     * @var string
+     */
     protected $_defaults;
-    protected $_allowed = array(
-        'GET','POST','PUT','DELETE','TRACE','UPDATE','HEAD','OPTIONS','CONNECT'
-    );
-    const APP_NAMESPACE = 'ZREST_ALLOW';
+    /**
+     *
+     * @var array
+     */
+    protected $_allowed = array('GET','POST','PUT','DELETE');
+    /**
+     * (non-PHPdoc)
+     * @see Zircote_Rest_Plugin_RestAbstract::setOptions()
+     */
     public function setOptions($options)
     {
-        $data = Zend_Registry::get(self::GLOBAL_NAMESPACE);
-        if(isset($options['storage_namespace'])){
-            $this->_namespace = $options['storage_namespace'];
-        }
         $this->_defaults = $options;
         if(isset($options['params'])){
             if(count($this->_defaults['params'])){
@@ -36,17 +41,23 @@ class Zircote_Rest_Plugin_Allow extends Zircote_Rest_Plugin_RestAbstract
                 }
             }
         }
-        $data[self::APP_NAMESPACE]['allow'] = $this->_allowed;
-        Zend_Registry::set(self::GLOBAL_NAMESPACE, $data);
+        $data = $this->_allowed;
+        Zircote_Rest_DbRegister::getInstance()
+            ->set(Zircote_Rest_DbRegister::ALLOW, $data);
         return $this;
     }
+    /**
+     * (non-PHPdoc)
+     * @see Zend_Controller_Plugin_Abstract::postDispatch()
+     */
     public function postDispatch($request)
     {
         if(!$this->getResponse()->isException()){
-            $data = Zend_Registry::get(self::GLOBAL_NAMESPACE);
+            $data = Zircote_Rest_DbRegister::getInstance()
+                ->get(Zircote_Rest_DbRegister::ALLOW);
             $this->getResponse()
             ->setHeader(
-                'Allow', implode(', ', $data[self::APP_NAMESPACE]['allow'])
+                'Allow', implode(', ', $data)
             );
         }
     }
