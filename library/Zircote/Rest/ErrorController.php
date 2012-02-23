@@ -1,6 +1,6 @@
 <?php
 
-class Zircote_Controller_RestErrorController extends Zend_Controller_Action
+class Zircote_Rest_ErrorController extends Zend_Controller_Action
 {
     
     /**
